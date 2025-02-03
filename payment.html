@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الدفع</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .payment-methods {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .payment-method {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .payment-method:hover {
+            background-color: #444;
+        }
+        .paypal-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>اختر طريقة الدفع</h1>
+
+        <div class="payment-methods">
+            <div class="payment-method" onclick="showDetails('stc')">STC Pay</div>
+            <div class="payment-method" onclick="showDetails('urpay')">UrPay</div>
+            <div class="payment-method" onclick="redirectToPaypal()">PayPal</div>
+        </div>
+
+        <div id="stc-details" class="details">
+            <h3>STC Pay</h3>
+            <input type="text" placeholder="رقم البطاقة" />
+            <input type="text" placeholder="اسم صاحب البطاقة" />
+            <input type="text" placeholder="تاريخ الانتهاء" />
+            <input type="text" placeholder="رمز CVV" />
+            <button>دفع الآن</button>
+        </div>
+
+        <div id="urpay-details" class="details">
+            <h3>UrPay</h3>
+            <input type="text" placeholder="رقم البطاقة" />
+            <input type="text" placeholder="اسم صاحب البطاقة" />
+            <input type="text" placeholder="تاريخ الانتهاء" />
+            <input type="text" placeholder="رمز CVV" />
+            <button>دفع الآن</button>
+        </div>
+
+        <!-- PayPal Button below -->
+        <div class="paypal-button-container">
+            <div id="paypal-button-container-P-32U255972J853863SM6QOO7A"></div>
+            <script src="https://www.paypal.com/sdk/js?client-id=ASJfLc64FYTw_9OZMynuAWo5kSNhqJ60vnV1IjJNqU1KzhedBHe8Lb6gReI8jeRPQlrn-Ef2nbcfVgBv&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+            <script>
+                paypal.Buttons({
+                    style: {
+                        shape: 'rect',
+                        color: 'gold',
+                        layout: 'vertical',
+                        label: 'subscribe'
+                    },
+                    createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                            /* Creates the subscription */
+                            plan_id: 'P-32U255972J853863SM6QOO7A',
+                            quantity: 1 // The quantity of the product for a subscription
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                    }
+                }).render('#paypal-button-container-P-32U255972J853863SM6QOO7A'); // Renders the PayPal button
+            </script>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(method) {
+            document.getElementById('stc-details').style.display = 'none';
+            document.getElementById('urpay-details').style.display = 'none';
+
+            if (method === 'stc') {
+                document.getElementById('stc-details').style.display = 'block';
+            } else if (method === 'urpay') {
+                document.getElementById('urpay-details').style.display = 'block';
+            }
+        }
+
+        function redirectToPaypal() {
+            window.open('https://www.paypal.com/signin', '_blank');
+        }
+    </script>
+
+</body>
+</html>
